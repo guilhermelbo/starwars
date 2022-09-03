@@ -25,11 +25,20 @@ class DB{
   }
 
   _onCreate(db, version) {
+    db.execute(_favorites);
     db.execute(_avatar);
     db.insert('avatar', {
       'svg': Get.find<FluttermojiController>().getFluttermojiFromOptions()
     });
   }
+
+  String get _favorites => '''
+    CREATE TABLE favorities (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT,
+      border_color INTEGER
+    );
+  ''';
 
   String get _avatar => '''
     CREATE TABLE avatar (
