@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:starwars/avatar_customize.dart';
 import 'package:starwars/avatar.dart';
+import 'package:starwars/site_oficial.dart';
 import 'package:starwars/tab_bar_star_wars.dart';
 
 
@@ -53,7 +54,14 @@ class _HomePageState extends State<HomePage>{
                 Container(
                   padding: const EdgeInsets.only(left: 10),
                   child: OutlinedButton(
-                    onPressed: (){}, 
+                    onPressed: (){
+                      if(bodyContent is SiteOficial){
+                        changeBodyContent(const TabBarStarWars());
+                      }
+                      else{
+                        changeBodyContent(const SiteOficial());
+                      }
+                    }, 
                     child: const Text('Site Oficial')
                   ),
                 ),
