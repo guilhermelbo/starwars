@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:starwars/avatar_customize.dart';
 import 'package:starwars/avatar.dart';
+import 'package:starwars/tab_bar_star_wars.dart';
+
 
 void main() {
   runApp(const MyApp());
@@ -27,18 +29,17 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
-  Widget bodyContent = const Text('testando');
-  
-  changeBodyContent(){
+class _HomePageState extends State<HomePage>{
+  Widget bodyContent = const TabBarStarWars();
+
+  changeBodyContent(Widget newBodyContent){
     setState(() {
-      bodyContent = const AvatarCustomize();
+      bodyContent = newBodyContent;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    TabController tabController = TabController(length: 3, vsync: this);
     return Scaffold(
       backgroundColor: Colors.white,
       body: Column(
@@ -60,7 +61,12 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                   padding: const EdgeInsets.only(right: 10, top: 10),
                   child: TextButton(
                     onPressed: ()=>{
-                      changeBodyContent()
+                      if(bodyContent is AvatarCustomize){
+                        changeBodyContent(const TabBarStarWars())
+                      }
+                      else{
+                        changeBodyContent(const AvatarCustomize())
+                      }
                     },
                     child: const Avatar()
                   ), 
@@ -68,29 +74,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
               ],
             ),
           ),
-          SizedBox(
-            height: 50,
-            child: TabBar(
-              controller: tabController,
-              labelColor: Colors.black,
-              tabs: const [
-                Tab(text: 'Filmes'),
-                Tab(text: 'Personagens'),
-                Tab(text: 'Favoritos'),
-              ]
-            ),
-          ),
-          SizedBox(
-            height: 150,
-            child: TabBarView(
-              controller: tabController,
-              children: const [
-                Tab(text: 'text'),
-                Tab(text: 'text 2'),
-                Tab(text: 'text 3'),
-              ]
-            ),
-          )
+          bodyContent
         ]
       )
     );
