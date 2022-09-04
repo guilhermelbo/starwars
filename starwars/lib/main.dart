@@ -55,7 +55,7 @@ class _HomePageState extends State<HomePage>{
                   padding: const EdgeInsets.only(left: 10),
                   child: OutlinedButton(
                     onPressed: (){
-                      if(bodyContent is SiteOficial){
+                      if(bodyContent is SiteOficial || bodyContent is AvatarCustomize){
                         changeBodyContent(const TabBarStarWars());
                       }
                       else{
@@ -69,7 +69,7 @@ class _HomePageState extends State<HomePage>{
                   padding: const EdgeInsets.only(right: 10, top: 10),
                   child: TextButton(
                     onPressed: ()=>{
-                      if(bodyContent is AvatarCustomize){
+                      if(bodyContent is AvatarCustomize || bodyContent is SiteOficial){
                         changeBodyContent(const TabBarStarWars())
                       }
                       else{
