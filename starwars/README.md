@@ -1,16 +1,22 @@
 # starwars
 
-A new Flutter project.
+## Instruções
 
-## Getting Started
+```bash
+git clone https://github.com/guilhermelbo/starwars
+cd starwars/starwars
+code .
 
-This project is a starting point for a Flutter application.
+```
 
-A few resources to get you started if this is your first Flutter project:
+Selecione o dispositivo android
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Abra o terminal na pasta do projeto e execute:
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```bash
+flutter pub get
+flutter run
+
+```
+
+Os arquivos Apk estão em https://github.com/guilhermelbo/starwars/tree/main/starwars/apk
