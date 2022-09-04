@@ -11,6 +11,8 @@ class TabBarStarWars extends StatefulWidget {
 
 class _TabBarStarWarsState extends State<TabBarStarWars> with TickerProviderStateMixin{
   late TabController tabController;
+  final ScrollController scrollController = ScrollController();
+  bool hasMore = true;
   List movieList = [];
   List characterList = [];
   late Future<dynamic> futureFavorites;
@@ -39,6 +41,20 @@ class _TabBarStarWarsState extends State<TabBarStarWars> with TickerProviderStat
   initState(){
     super.initState();
     tabController = TabController(vsync: this, length: 3);
+    scrollController.addListener(() { 
+      if(scrollController.position.maxScrollExtent == scrollController.offset){
+        ApiConsumer.fetchCharacters().then((value)=>{
+          setState(() {
+            if(value == null){
+              hasMore = false;
+            }
+            else{
+              characterList.addAll(value);
+            }
+          })
+        });
+      }
+    });
   }
 
   loadFavoriteButtonIcon() async {
@@ -131,36 +147,49 @@ class _TabBarStarWarsState extends State<TabBarStarWars> with TickerProviderStat
               ),
               Tab(
                 child: ListView.separated(
+                  controller: scrollController,
                   itemBuilder: (BuildContext context, int character){
-                    return ListTile(
-                      shape: const RoundedRectangleBorder(
-                        side: BorderSide(width: 2, color: Colors.black),
-                      ),
-                      title: Text(characterList[character]),
-                      trailing: IconButton(
-                        onPressed: (){
-                          if(favorites.containsKey(characterList[character])){
-                            removeFavorite(characterList[character], 2);
-                          }
-                          else{
-                            saveFavorite(characterList[character], 2);
-                            tabController.animateTo(0);
-                          }
-                        }, 
-                        icon: FutureBuilder(
-                          future: futureFavorites,
-                          builder: (context, snapshot) {
+                    if(character < characterList.length){
+                      return ListTile(
+                        shape: const RoundedRectangleBorder(
+                          side: BorderSide(width: 2, color: Colors.black),
+                        ),
+                        title: Text(characterList[character]),
+                        trailing: IconButton(
+                          onPressed: (){
                             if(favorites.containsKey(characterList[character])){
-                              return const Icon(Icons.favorite);
+                              removeFavorite(characterList[character], 2);
                             }
-                            return const Icon(Icons.favorite_border_outlined);
-                          },
-                        )
-                      ),
-                    );
+                            else{
+                              saveFavorite(characterList[character], 2);
+                              tabController.animateTo(0);
+                            }
+                          }, 
+                          icon: FutureBuilder(
+                            future: futureFavorites,
+                            builder: (context, snapshot) {
+                              if(favorites.containsKey(characterList[character])){
+                                return const Icon(Icons.favorite);
+                              }
+                              return const Icon(Icons.favorite_border_outlined);
+                            },
+                          )
+                        ),
+                      );
+                    }
+                    else{
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 32),
+                        child: Center(
+                          child: hasMore
+                          ? const CircularProgressIndicator()
+                          : const Text('Não existem mais personagens'),
+                        ),
+                      );
+                    }
                   }, 
                   separatorBuilder: (_,__) => const Divider(), 
-                  itemCount: characterList.length
+                  itemCount: characterList.length+1
                 ),
               ),
               Tab(
