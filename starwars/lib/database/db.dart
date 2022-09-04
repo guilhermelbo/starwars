@@ -33,10 +33,10 @@ class DB{
   }
 
   String get _favorites => '''
-    CREATE TABLE favorities (
+    CREATE TABLE favorites (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT,
-      border_color INTEGER
+      num_border_color INTEGER
     );
   ''';
 
